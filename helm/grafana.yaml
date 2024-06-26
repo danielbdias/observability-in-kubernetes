@@ -1,0 +1,32 @@
+#####################################################################################################################################
+# Visualization (Grafana)
+# https://github.com/grafana/helm-charts/blob/main/charts/grafana/values.yaml
+#####################################################################################################################################
+
+adminUser: admin
+adminPassword: admin
+
+datasources:
+  datasources.yaml:
+    apiVersion: 1
+    datasources:
+      - name: Prometheus
+        uid: prom
+        type: prometheus
+        url: http://prometheus-server.monitoring
+        isDefault: true
+
+      # reference: https://grafana.com/docs/grafana/latest/datasources/jaeger/
+      - name: Jaeger
+        type: jaeger
+        uid: jaeger
+        url: http://jaeger-query.monitoring:16686
+      
+      # reference: https://grafana.com/docs/grafana/latest/datasources/loki/
+      - name: Loki
+        type: loki
+        access: proxy
+        url: http://loki.monitoring:3100
+        jsonData:
+          timeout: 60
+          maxLines: 1000

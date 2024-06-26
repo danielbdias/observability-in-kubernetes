@@ -1,0 +1,43 @@
+#####################################################################################################################################
+# Metrics server (Prometheus)
+# https://github.com/prometheus-community/helm-charts/blob/main/charts/prometheus/values.yaml
+#####################################################################################################################################
+
+server:
+  retention: "3d"
+  
+  extraArgs:
+    log.level: debug
+
+serverFiles:
+  alerting_rules.yml: {}
+  
+  recording_rules.yml: {}
+
+  prometheus.yml:
+    rule_files:
+      - /etc/config/recording_rules.yml
+      - /etc/config/alerting_rules.yml
+
+    scrape_configs:
+      - job_name: prometheus
+        static_configs:
+          - targets:
+            - localhost:9090
+      - job_name: otel-collector
+        scrape_interval: 15s
+        static_configs:
+          - targets: ['otel-collector-opentelemetry-collector.collectors:8889'] # Metrics from the instrumented applications
+          - targets: ['otel-collector-opentelemetry-collector.collectors:8888'] # Internal metrics for OTel Collector
+
+alertmanager:
+  enabled: false
+
+kube-state-metrics:
+  enabled: false
+
+prometheus-node-exporter:
+  enabled: false
+
+prometheus-pushgateway:
+  enabled: false

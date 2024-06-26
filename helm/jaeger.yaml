@@ -1,0 +1,25 @@
+#####################################################################################################################################
+# Tracing backend (Jaeger)
+# https://github.com/jaegertracing/helm-charts/blob/main/charts/jaeger/values.yaml
+#####################################################################################################################################
+
+provisionDataStore:
+  cassandra: false
+
+allInOne:
+  enabled: true
+  resources:
+    limits:
+      memory: 512Mi
+    requests:
+      memory: 512Mi
+
+storage:
+  type: memory
+
+agent:
+  enabled: false
+collector:
+  enabled: false
+query:
+  enabled: false
